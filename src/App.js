@@ -8,11 +8,11 @@ export const ChartComponent = (props) => {
     colors: {
       backgroundColor = 'white',
       lineColor = '#348344',
-      lineType = 2,
+      lineType = 0, //2 suaviza com curvas
       PriceLineStyle = 0,
       textColor = 'gray',
-      // areaTopColor = 'white',
-      // areaBottomColor = 'white',
+      areaTopColor = '#348344',
+      areaBottomColor = 'white',
       topColor = 'white',
       bottomColor = 'white',
       // invertFilledArea=true,
@@ -56,8 +56,8 @@ export const ChartComponent = (props) => {
     const newSeries = chart.addAreaSeries({
       lineColor,
       lineType,
-      topColor,
-      bottomColor,
+      // topColor,
+      // bottomColor,
       // invertFilledArea,
       value,
       colorType,
@@ -71,8 +71,8 @@ export const ChartComponent = (props) => {
       AutoScaleMargins,
       // LastBar,
       // LastVisible,
-      // topColor: areaTopColor,
-      // bottomColor: areaBottomColor,
+      topColor: areaTopColor,
+      bottomColor: areaBottomColor,
     });
     newSeries.setData(data);
 
