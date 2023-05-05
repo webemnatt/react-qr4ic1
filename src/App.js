@@ -46,6 +46,8 @@ export const ChartComponent = (props) => {
   const chartContainerRef = useRef();
   const [chartData, setChartData] = useState(data);
 
+  const [activeButton, setActiveButton] = useState(null);
+
   const addNewData = () => {
     const newData = [
       { time: '2019-01-01', value: 25 },
@@ -55,6 +57,11 @@ export const ChartComponent = (props) => {
       { time: '2019-01-05', value: 27 },
     ];
     setChartData([...chartData, ...newData]);
+  };
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+    addNewData();
   };
 
   useEffect(() => {
@@ -139,7 +146,36 @@ export const ChartComponent = (props) => {
 
   return (
     <div>
+      <div className="commodities">
+        {commoditiesList.map((commodity, index) => (
+          <button
+            disabled={activeButton === `button${index + 1}`}
+            onClick={() => handleButtonClick(`button${index + 1}`)}
+          >
+            {commodity}
+          </button>
+        ))}
+      </div>
       <button onClick={addNewData}>Adicionar nova série de dados</button>
+      {stockExchange.map((item, id) => {
+        let value = '';
+        if (Math.sign(item.value) === 0) {
+          value = 'stable';
+        } else if (Math.sign(item.value) > 0) {
+          value = 'positive';
+        } else {
+          value = 'negative';
+        }
+
+        return (
+          <div className="quotation" key={id}>
+            <span className="quotation__name">{item.name}</span>
+            <span className={`quotation__value quotation__value-${value}`}>
+              {Math.abs(item.value)} pts
+            </span>
+          </div>
+        );
+      })}
       <div ref={chartContainerRef} />
     </div>
   );
@@ -159,49 +195,9 @@ const initialData = [
 ];
 
 export default function App(props) {
-  const [activeButton, setActiveButton] = useState(null);
-  const chartContainerRef = useRef(null);
-  const [showChart, setShowChart] = useState(false);
-
-  const handleButtonClick = (button) => {
-    setActiveButton(button);
-    setShowChart(true);
-  };
-
   return (
     <div>
       <div className="grafico-cotacoes-container">
-        <div className="commodities">
-          {commoditiesList.map((commodity, index) => (
-            <button
-              disabled={activeButton === `button${index + 1}`}
-              onClick={() => handleButtonClick(`button${index + 1}`)}
-            >
-              {commodity}
-            </button>
-          ))}
-        </div>
-
-        {stockExchange.map((item, id) => {
-          let value = '';
-          if (Math.sign(item.value) === 0) {
-            value = 'stable';
-          } else if (Math.sign(item.value) > 0) {
-            value = 'positive';
-          } else {
-            value = 'negative';
-          }
-
-          return (
-            <div className="quotation" key={id}>
-              <span className="quotation__name">{item.name}</span>
-              <span className={`quotation__value quotation__value-${value}`}>
-                {Math.abs(item.value)} pts
-              </span>
-            </div>
-          );
-        })}
-
         <ChartComponent {...props} data={initialData}></ChartComponent>
       </div>
     </div>
