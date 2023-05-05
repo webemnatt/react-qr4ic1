@@ -44,6 +44,18 @@ export const ChartComponent = (props) => {
   } = props;
 
   const chartContainerRef = useRef();
+  const [chartData, setChartData] = useState(data);
+
+  const addNewData = () => {
+    const newData = [
+      { time: '2019-01-01', value: 25 },
+      { time: '2019-01-02', value: 26 },
+      { time: '2019-01-03', value: 24 },
+      { time: '2019-01-04', value: 28 },
+      { time: '2019-01-05', value: 27 },
+    ];
+    setChartData([...chartData, ...newData]);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,7 +116,7 @@ export const ChartComponent = (props) => {
       crosshairMarkerBackgroundColor: '#348344',
       crosshairMarkerBorderWidth: 0,
     });
-    newSeries.setData(data);
+    newSeries.setData(chartData);
 
     window.addEventListener('resize', handleResize);
 
@@ -114,7 +126,7 @@ export const ChartComponent = (props) => {
       chart.remove();
     };
   }, [
-    data,
+    chartData,
     backgroundColor,
     lineColor,
     textColor,
@@ -125,7 +137,12 @@ export const ChartComponent = (props) => {
     AutoScaleMargins,
   ]);
 
-  return <div ref={chartContainerRef} />;
+  return (
+    <div>
+      <button onClick={addNewData}>Adicionar nova série de dados</button>
+      <div ref={chartContainerRef} />
+    </div>
+  );
 };
 
 const initialData = [
