@@ -9,7 +9,7 @@ const stockExchange = [
   {
     id: 1,
     name: 'Bolsa de Chicago',
-    value: 0,
+    value: -120,
   },
 ];
 
@@ -178,10 +178,7 @@ export default function App(props) {
           return (
             <div className="quotation" key={id}>
               <span className="quotation__name">{item.name}</span>
-              <span
-                className={`${value}-quotation__value ${value}-quotation__value__icon
-                `}
-              >
+              <span className={`quotation__value quotation__value-${value}`}>
                 {Math.abs(item.value)} pts
               </span>
             </div>

@@ -1,3 +1,10 @@
+$black: #333;
+$white: #ffffff;
+$darkGreen: #2b4d32;
+$negative: #d14e4e;
+$positive: #162fb9;
+$stable: #707070;
+
 * {
   padding: 0;
   margin: 0;
@@ -7,7 +14,7 @@
 .grafico-cotacoes-container {
   font-family: 'Source Sans Pro', sans-serif;
   padding: 16px;
-  color: #333;
+  color: $black;
 
   .title {
     font-size: 20px;
@@ -26,13 +33,13 @@ button {
   text-align: center;
   text-shadow: none;
   margin: 0px 10px 14px 0px;
-  background-color: #ffffff;
-  color: #2b4d32;
+  background-color: $white;
+  color: $darkGreen;
   border: solid 1px;
 
   &:disabled {
-    background-color: #2b4d32;
-    color: #ffffff;
+    background-color: $darkGreen;
+    color: $white;
     transform: translateY(1px);
   }
 }
@@ -40,65 +47,49 @@ button {
 .quotation {
   display: flex;
   overflow: hidden;
+  gap: 200px;
+  margin-bottom: 10px;
+
   &__name {
     font-size: 18px;
     font-weight: normal;
   }
 }
 
-.positive-quotation {
-  &__value {
-    color: #162fb9;
-    margin-left: 20%;
-    font-weight: bold;
-    width: 25%;
+.quotation__value {
+  font-weight: bold;
+  position: relative;
 
-    &__icon {
-      &::before {
-        content: '';
-        position: absolute;
-        margin: 7px 0px 0px -20px;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 8px solid #162fb9;
-      }
+  &-positive {
+    color: $positive;
+    &::before {
+      content: '';
+      position: absolute;
+      margin: 7px 0px 0px -20px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid $positive;
     }
   }
-}
 
-.negative-quotation {
-  &__value {
-    color: #d14e4e;
-    margin-left: 20%;
-    font-weight: bold;
-    width: 25%;
-
-    &__icon {
-      &::before {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        margin: 5px 0px 0px -20px;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid #d14e4e;
-      }
+  &-negative {
+    color: $negative;
+    &::before {
+      content: '';
+      position: absolute;
+      margin: 5px 0px 0px -20px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid $negative;
     }
   }
-}
 
-.stable-quotation {
-  &__value {
-    color: gray;
-    margin-left: 20%;
-    font-weight: bold;
-    width: 25%;
-
-    &__icon {
+  &-stable {
+    &__value {
+      color: $stable;
       &::before {
         content: '●';
-        color: gray;
+        color: $stable;
         margin-right: 5px;
       }
     }
