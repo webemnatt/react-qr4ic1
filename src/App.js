@@ -1,38 +1,45 @@
 import { createChart, ColorType } from 'lightweight-charts';
-import React, { useEffect, useRef } from 'react';
-import './style.css';
+import React, { useEffect, useRef, useState } from 'react';
+
+import './style.scss';
+
+const commoditiesList = ['Açúcar', 'Milho', 'Soja', 'Café', 'Boi'];
+
+const stockExchange = [
+  {
+    id: 1,
+    name: 'Bolsa de Chicago',
+    value: 0,
+  },
+];
 
 export const ChartComponent = (props) => {
   const {
     data,
     colors: {
-      backgroundColor = 'white',
-      lineColor = '#348344',
-      lineType = 0, //2 suaviza com curvas
+      backgroundColor = '#ffffff',
+      lineColor = '#2b4d32',
+      lineType = 0,
       PriceLineStyle = 0,
-      textColor = 'gray',
-      areaTopColor = '#348344',
-      areaBottomColor = 'white',
+      textColor = '#333333',
+      fontFamily = "'Source Sans Pro', 'sans-serif'",
+      fontSize = 12,
+      areaTopColor = '#2b4d32',
+      areaBottomColor = '#ffffff',
       topColor = 'white',
       bottomColor = 'white',
-      // invertFilledArea=true,
+      invertFilledArea = true,
       value = 1,
       colorType = 'gradient',
       TickMarkType = 1,
       baseLineVisible = false,
       baseLineColor = 'white',
-      // CrosshairMode = 0,
+      CrosshairMode = 0,
       crosshairMarkerRadius = 5,
-      PriceLineSource = 0, //0 ou 1
-      AutoScaleMargins = 100, //TAMANHO DO GRÁFICO
+      PriceLineSource = 0,
+      AutoScaleMargins = 100,
       LastBar = 0,
       LastVisible = 1,
-      //sem linhas ao fundo
-      //ponto de interseção: uma única tag
-      // apenas linha vertical de guia
-      // eixo y sem linha à esquerda com cor de texto #707070
-      //eixo x também sem linha indicando meses
-      //https://tradingview.github.io/lightweight-charts/docs/api/enums/LineStyle
     } = {},
   } = props;
 
@@ -47,11 +54,32 @@ export const ChartComponent = (props) => {
       layout: {
         background: { type: ColorType.Solid, color: backgroundColor },
         textColor,
+        fontSize,
+        fontFamily,
       },
       width: chartContainerRef.current.clientWidth,
       height: 300,
+      crosshair: {
+        vertLine: {
+          color: '#333',
+          width: 1,
+          style: 0,
+        },
+        horzLine: {
+          color: '#333',
+          width: 1,
+          style: 0,
+        },
+        visible: false,
+        labelVisible: true,
+        labelBackgroundColor: 'pink',
+      },
     });
-    chart.timeScale().fitContent();
+    chart.timeScale().fitContent({
+      borderColor: 'red',
+      barSpacing: 10000,
+      ticksVisible: false,
+    });
 
     const newSeries = chart.addAreaSeries({
       lineColor,
@@ -61,7 +89,7 @@ export const ChartComponent = (props) => {
       // invertFilledArea,
       value,
       colorType,
-      // TickMarkType,
+      TickMarkType,
       baseLineVisible,
       baseLineColor,
       // PriceLineStyle,
@@ -73,6 +101,8 @@ export const ChartComponent = (props) => {
       // LastVisible,
       topColor: areaTopColor,
       bottomColor: areaBottomColor,
+      crosshairMarkerBackgroundColor: '#348344',
+      crosshairMarkerBorderWidth: 0,
     });
     newSeries.setData(data);
 
@@ -88,8 +118,10 @@ export const ChartComponent = (props) => {
     backgroundColor,
     lineColor,
     textColor,
-    // areaTopColor,
-    // areaBottomColor,
+    fontSize,
+    fontFamily,
+    areaTopColor,
+    areaBottomColor,
     AutoScaleMargins,
   ]);
 
@@ -110,11 +142,54 @@ const initialData = [
 ];
 
 export default function App(props) {
+  const [activeButton, setActiveButton] = useState(null);
+  const chartContainerRef = useRef(null);
+  const [showChart, setShowChart] = useState(false);
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+    setShowChart(true);
+  };
+
   return (
     <div>
-      <h1>Cotação</h1>
-      <p>Mais informações</p>
-      <ChartComponent {...props} data={initialData}></ChartComponent>
+      <div className="grafico-cotacoes-container">
+        <div className="commodities">
+          {commoditiesList.map((commodity, index) => (
+            <button
+              disabled={activeButton === `button${index + 1}`}
+              onClick={() => handleButtonClick(`button${index + 1}`)}
+            >
+              {commodity}
+            </button>
+          ))}
+        </div>
+
+        {stockExchange.map((item, id) => {
+          let value = '';
+          if (Math.sign(item.value) === 0) {
+            value = 'stable';
+          } else if (Math.sign(item.value) > 0) {
+            value = 'positive';
+          } else {
+            value = 'negative';
+          }
+
+          return (
+            <div className="quotation" key={id}>
+              <span className="quotation__name">{item.name}</span>
+              <span
+                className={`${value}-quotation__value ${value}-quotation__value__icon
+                `}
+              >
+                {Math.abs(item.value)} pts
+              </span>
+            </div>
+          );
+        })}
+
+        <ChartComponent {...props} data={initialData}></ChartComponent>
+      </div>
     </div>
   );
 }
