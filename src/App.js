@@ -1,177 +1,9 @@
 import { createChart, ColorType } from 'lightweight-charts';
 import React, { useEffect, useRef, useState } from 'react';
-
 import './style.scss';
 
-const commoditiesList = ['Açúcar', 'Milho', 'Soja', 'Café', 'Boi'];
-
-const initialData = [
-  { time: '2018-12-22', value: 32.51 },
-  { time: '2018-12-23', value: 31.11 },
-  { time: '2018-12-24', value: 27.02 },
-  { time: '2018-12-25', value: 27.32 },
-  { time: '2018-12-26', value: 25.17 },
-  { time: '2018-12-27', value: 28.89 },
-  { time: '2018-12-28', value: 25.46 },
-  { time: '2018-12-29', value: 23.92 },
-  { time: '2018-12-30', value: 22.68 },
-  { time: '2018-12-31', value: 22.67 },
-];
-
-const chartList = [
-  {
-    index: 0,
-    name: '2019',
-    data: [
-      { time: '2019-01-01', value: 25 },
-      { time: '2019-01-02', value: 26 },
-      { time: '2019-01-03', value: 24 },
-      { time: '2019-01-04', value: 28 },
-      { time: '2019-01-05', value: 27 },
-      { time: '2019-01-06', value: 30 },
-      { time: '2019-01-07', value: 32 },
-      { time: '2019-01-08', value: 29 },
-      { time: '2019-01-09', value: 35 },
-      { time: '2019-01-10', value: 33 },
-      { time: '2019-01-11', value: 20 },
-      { time: '2019-01-12', value: 22 },
-    ],
-  },
-  {
-    index: 1,
-    name: '2020',
-    data: [
-      { time: '2020-01-01', value: 25 },
-      { time: '2020-01-02', value: 26 },
-      { time: '2020-01-03', value: 24 },
-      { time: '2020-01-04', value: 28 },
-      { time: '2020-01-05', value: 27 },
-      { time: '2020-01-06', value: 30 },
-      { time: '2020-01-07', value: 32 },
-      { time: '2020-01-08', value: 29 },
-      { time: '2020-01-09', value: 35 },
-      { time: '2020-01-10', value: 33 },
-      { time: '2020-01-11', value: 20 },
-      { time: '2020-01-12', value: 22 },
-    ],
-  },
-  {
-    index: 2,
-    name: '2021',
-    data: [
-      { time: '2021-01-01', value: 25 },
-      { time: '2021-01-02', value: 26 },
-      { time: '2021-01-03', value: 24 },
-      { time: '2021-01-04', value: 28 },
-      { time: '2021-01-05', value: 27 },
-      { time: '2021-01-06', value: 30 },
-      { time: '2021-01-07', value: 32 },
-      { time: '2021-01-08', value: 29 },
-      { time: '2021-01-09', value: 35 },
-      { time: '2021-01-10', value: 33 },
-      { time: '2021-01-11', value: 20 },
-      { time: '2021-01-12', value: 22 },
-    ],
-  },
-  {
-    index: 3,
-    name: '2023',
-    data: [
-      { time: '2023-11-22', value: 72.51 },
-      { time: '2023-11-23', value: 71.11 },
-      { time: '2023-11-24', value: 77.02 },
-      { time: '2023-11-25', value: 77.32 },
-      { time: '2023-11-26', value: 75.17 },
-      { time: '2023-11-27', value: 78.89 },
-      { time: '2023-11-28', value: 75.46 },
-      { time: '2023-11-29', value: 73.92 },
-      { time: '2023-11-30', value: 72.68 },
-    ],
-  },
-];
-
-const stockExchange = [
-  {
-    id: 1,
-    name: 'Bolsa de Chicago',
-    value: -120,
-  },
-];
-
-export const ChartComponent = (props) => {
-  const {
-    data,
-    colors: {
-      backgroundColor = '#ffffff',
-      lineColor = '#2b4d32',
-      lineType = 0,
-      PriceLineStyle = 0,
-      textColor = '#333333',
-      fontFamily = "'Source Sans Pro', 'sans-serif'",
-      fontSize = 12,
-      areaTopColor = '#2b4d32',
-      areaBottomColor = '#ffffff',
-      topColor = 'white',
-      bottomColor = 'white',
-      invertFilledArea = true,
-      value = 1,
-      colorType = 'gradient',
-      TickMarkType = 1,
-      baseLineVisible = false,
-      baseLineColor = 'white',
-      CrosshairMode = 0,
-      crosshairMarkerRadius = 5,
-      PriceLineSource = 0,
-      AutoScaleMargins = 100,
-      LastBar = 0,
-      LastVisible = 1,
-    } = {},
-  } = props;
-
+export const ChartComponent = ({ data, colors = {} }) => {
   const chartContainerRef = useRef();
-  const [chartData, setChartData] = useState(data);
-
-  const [activeButton, setActiveButton] = useState(null);
-
-  const addNewData = () => {
-    const newData = [
-      { time: '2023-11-22', value: 72.51 },
-      { time: '2023-11-23', value: 71.11 },
-      { time: '2023-11-24', value: 77.02 },
-      { time: '2023-11-25', value: 77.32 },
-      { time: '2023-11-26', value: 75.17 },
-      { time: '2023-11-27', value: 78.89 },
-      { time: '2023-11-28', value: 75.46 },
-      { time: '2023-11-29', value: 73.92 },
-      { time: '2023-11-30', value: 72.68 },
-    ];
-    setChartData([...chartData, ...newData]);
-  };
-
-  const addNewData01 = () => {
-    const dados01 = chartList.find((item) => item.name === 'Botão 1').data;
-    setChartData([...chartData, ...dados01]);
-  };
-
-  const addNewData02 = () => {
-    const dados = chartList.find((item) => item.name === 'Botão 2').data;
-    setChartData([...chartData, ...dados]);
-  };
-
-  const handleButtonClick = (button) => {
-    setActiveButton(button);
-    addNewData02();
-  };
-
-  const addNewData03 = () => {
-    const dados03 = chartList.find((item) => item.name === 'Botão 3').data;
-    setChartData([...chartData, ...dados03]);
-  };
-
-  const addNewData04 = () => {
-    const dados04 = chartList.find((item) => item.name === 'Botão 4').data;
-    setChartData([...chartData, ...dados04]);
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -180,11 +12,13 @@ export const ChartComponent = (props) => {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: backgroundColor },
-        textColor,
-        fontSize,
-        fontFamily,
+        background: {
+          type: ColorType.Solid,
+          color: '#ffffff',
+        },
+        textColor: '#333',
       },
+
       width: chartContainerRef.current.clientWidth,
       height: 300,
       crosshair: {
@@ -198,37 +32,18 @@ export const ChartComponent = (props) => {
           width: 1,
           style: 0,
         },
-        visible: false,
-        labelVisible: true,
-        labelBackgroundColor: 'pink',
       },
     });
     chart.timeScale().fitContent();
 
     const newSeries = chart.addAreaSeries({
-      lineColor,
-      lineType,
-      // topColor,
-      // bottomColor,
-      // invertFilledArea,
-      value,
-      colorType,
-      TickMarkType,
-      baseLineVisible,
-      baseLineColor,
-      // PriceLineStyle,
-      // CrosshairMode,
-      crosshairMarkerRadius,
-      // PriceLineSource,
-      AutoScaleMargins,
-      // LastBar,
-      // LastVisible,
-      topColor: areaTopColor,
-      bottomColor: areaBottomColor,
+      lineColor: '#2b4d32',
+      topColor: '#2b4d32',
+      bottomColor: '#ffffff',
       crosshairMarkerBackgroundColor: '#348344',
       crosshairMarkerBorderWidth: 0,
     });
-    newSeries.setData(chartData);
+    newSeries.setData(data);
 
     window.addEventListener('resize', handleResize);
 
@@ -237,58 +52,114 @@ export const ChartComponent = (props) => {
 
       chart.remove();
     };
-  }, [
-    chartData,
-    backgroundColor,
-    lineColor,
-    textColor,
-    fontSize,
-    fontFamily,
-    areaTopColor,
-    areaBottomColor,
-    AutoScaleMargins,
-  ]);
+  }, [data, colors]);
+
+  return <div ref={chartContainerRef} />;
+};
+
+const chartList = [
+  {
+    name: 'Açúcar',
+    data: [
+      { time: '2018-12-22', value: 32.51 },
+      { time: '2018-12-23', value: 31.11 },
+      { time: '2018-12-24', value: 27.02 },
+      { time: '2018-12-25', value: 27.32 },
+      { time: '2018-12-26', value: 25.17 },
+      { time: '2018-12-27', value: 28.89 },
+      { time: '2018-12-28', value: 25.46 },
+      { time: '2018-12-29', value: 23.92 },
+      { time: '2018-12-30', value: 22.68 },
+      { time: '2018-12-31', value: 22.67 },
+    ],
+  },
+  {
+    name: 'Milho',
+    data: [
+      { time: '2018-12-22', value: 52.51 },
+      { time: '2018-12-23', value: 51.11 },
+      { time: '2018-12-24', value: 57.02 },
+      { time: '2018-12-25', value: 57.32 },
+      { time: '2018-12-26', value: 55.17 },
+      { time: '2018-12-27', value: 58.89 },
+      { time: '2018-12-28', value: 55.46 },
+      { time: '2018-12-29', value: 53.92 },
+      { time: '2018-12-30', value: 52.68 },
+      { time: '2018-12-31', value: 52.67 },
+    ],
+  },
+  {
+    name: 'Soja',
+    data: [
+      { time: '2018-12-22', value: 82.51 },
+      { time: '2018-12-23', value: 81.11 },
+      { time: '2018-12-24', value: 77.02 },
+      { time: '2018-12-25', value: 87.32 },
+      { time: '2018-12-26', value: 85.17 },
+      { time: '2018-12-27', value: 88.89 },
+      { time: '2018-12-28', value: 85.46 },
+      { time: '2018-12-29', value: 53.92 },
+      { time: '2018-12-30', value: 82.68 },
+      { time: '2018-12-31', value: 82.67 },
+    ],
+  },
+];
+
+const stockExchange = [
+  {
+    id: 1,
+    name: 'Bolsa de Chicago',
+    value: -120,
+  },
+];
+
+export default function Component(props) {
+  const [selectedChartIndex, setSelectedChartIndex] = useState(0);
+  const [activeButton, setActiveButton] = useState(null);
+  const [disable, setDisable] = useState(false);
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+    if (`${button}1`) setDisable(true);
+  };
+
+  const changeSelectedChart = (index) => {
+    setSelectedChartIndex(index);
+  };
+
+  const selectedChartData = chartList[selectedChartIndex].data;
 
   return (
-    <div>
+    <div className="grafico-cotacoes-container">
       <div className="commodities">
-        {/* {chartList.map((commodity, index) => (
-          <button
-            disabled={activeButton === `button${index + 1}`}
-            onClick={() => {
-              handleButtonClick(`button${index + 1}`);
-            }}
-          >
-            {commodity.name}
-          </button>
-        ))} */}
         <button
-          // disabled={activeButton === 'button1'}
-          onClick={addNewData01}
+          disabled={activeButton === `button1` || !disable}
+          onClick={() => {
+            changeSelectedChart(0);
+            handleButtonClick(`button1`);
+          }}
         >
           {chartList[0].name}
         </button>
         <button
-          // disabled={activeButton === 'button2'}
-          onClick={addNewData02}
+          disabled={activeButton === `button2`}
+          onClick={() => {
+            changeSelectedChart(1);
+            handleButtonClick(`button2`);
+          }}
         >
           {chartList[1].name}
         </button>
         <button
-          // disabled={activeButton === 'button3'}
-          onClick={addNewData03}
+          disabled={activeButton === `button3`}
+          onClick={() => {
+            changeSelectedChart(2);
+            handleButtonClick(`button3`);
+          }}
         >
           {chartList[2].name}
         </button>
-        <button
-          // disabled={activeButton === 'button4'}
-          onClick={addNewData04}
-        >
-          {chartList[3].name}
-        </button>
       </div>
-      {/* <button onClick={addNewData}>Adicionar nova série de dados</button> */}
-
       {stockExchange.map((item, id) => {
         let value = '';
         if (Math.sign(item.value) === 0) {
@@ -308,16 +179,9 @@ export const ChartComponent = (props) => {
           </div>
         );
       })}
-      <div ref={chartContainerRef} />
-    </div>
-  );
-};
 
-export default function App(props) {
-  return (
-    <div>
-      <div className="grafico-cotacoes-container">
-        <ChartComponent {...props} data={initialData}></ChartComponent>
+      <div>
+        <ChartComponent {...props} data={selectedChartData} />
       </div>
     </div>
   );
