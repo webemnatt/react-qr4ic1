@@ -5,14 +5,6 @@ import './style.scss';
 
 const commoditiesList = ['Açúcar', 'Milho', 'Soja', 'Café', 'Boi'];
 
-const newData = [
-  { time: '2019-01-01', value: 25 },
-  { time: '2019-01-02', value: 26 },
-  { time: '2019-01-03', value: 24 },
-  { time: '2019-01-04', value: 28 },
-  { time: '2019-01-05', value: 27 },
-];
-
 const chartList = [
   {
     index: 0,
@@ -29,11 +21,11 @@ const chartList = [
     index: 1,
     name: 'Botão 2',
     data: [
-      { time: '2019-01-01', value: 30 },
-      { time: '2019-01-02', value: 32 },
-      { time: '2019-01-03', value: 29 },
-      { time: '2019-01-04', value: 35 },
-      { time: '2019-01-05', value: 33 },
+      { time: '2019-01-06', value: 30 },
+      { time: '2019-01-07', value: 32 },
+      { time: '2019-01-08', value: 29 },
+      { time: '2019-01-09', value: 35 },
+      { time: '2019-01-10', value: 33 },
     ],
   },
   {
@@ -93,13 +85,19 @@ export const ChartComponent = (props) => {
   const [activeButton, setActiveButton] = useState(null);
 
   const addNewData = () => {
-    newData;
+    const newData = [
+      { time: '2019-01-01', value: 25 },
+      { time: '2019-01-02', value: 30 },
+      { time: '2019-01-03', value: 24 },
+      { time: '2019-01-04', value: 52 },
+      { time: '2019-01-05', value: 81 },
+    ];
     setChartData([...chartData, ...newData]);
   };
 
   const addNewData02 = () => {
-    const dados = chartList.find((item) => item.name === 'Botão 3').data;
-    setChartData([...chartData, ...newData]);
+    const dados = chartList.find((item) => item.name === 'Botão 2').data;
+    setChartData([...chartData, ...dados]);
   };
 
   const handleButtonClick = (button) => {
@@ -190,7 +188,7 @@ export const ChartComponent = (props) => {
   return (
     <div>
       <div className="commodities">
-        {chartList.map((commodity, index) => (
+        {/* {chartList.map((commodity, index) => (
           <button
             disabled={activeButton === `button${index + 1}`}
             onClick={() => {
@@ -199,7 +197,25 @@ export const ChartComponent = (props) => {
           >
             {commodity.name}
           </button>
-        ))}
+        ))} */}
+        <button
+          disabled={activeButton === 'button1'}
+          onClick={() => handleButtonClick('button1')}
+        >
+          Botão 1
+        </button>
+        <button
+          disabled={activeButton === 'button2'}
+          onClick={() => handleButtonClick('button2')}
+        >
+          Botão 2
+        </button>
+        <button
+          disabled={activeButton === 'button3'}
+          onClick={() => handleButtonClick('button3')}
+        >
+          Botão 3
+        </button>
       </div>
       <button onClick={addNewData}>Adicionar nova série de dados</button>
 
