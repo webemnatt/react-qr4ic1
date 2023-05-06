@@ -5,38 +5,87 @@ import './style.scss';
 
 const commoditiesList = ['Açúcar', 'Milho', 'Soja', 'Café', 'Boi'];
 
+const initialData = [
+  { time: '2018-12-22', value: 32.51 },
+  { time: '2018-12-23', value: 31.11 },
+  { time: '2018-12-24', value: 27.02 },
+  { time: '2018-12-25', value: 27.32 },
+  { time: '2018-12-26', value: 25.17 },
+  { time: '2018-12-27', value: 28.89 },
+  { time: '2018-12-28', value: 25.46 },
+  { time: '2018-12-29', value: 23.92 },
+  { time: '2018-12-30', value: 22.68 },
+  { time: '2018-12-31', value: 22.67 },
+];
+
 const chartList = [
   {
     index: 0,
-    name: 'Botão 1',
+    name: '2019',
     data: [
       { time: '2019-01-01', value: 25 },
       { time: '2019-01-02', value: 26 },
       { time: '2019-01-03', value: 24 },
       { time: '2019-01-04', value: 28 },
       { time: '2019-01-05', value: 27 },
-    ],
-  },
-  {
-    index: 1,
-    name: 'Botão 2',
-    data: [
       { time: '2019-01-06', value: 30 },
       { time: '2019-01-07', value: 32 },
       { time: '2019-01-08', value: 29 },
       { time: '2019-01-09', value: 35 },
       { time: '2019-01-10', value: 33 },
+      { time: '2019-01-11', value: 20 },
+      { time: '2019-01-12', value: 22 },
+    ],
+  },
+  {
+    index: 1,
+    name: '2020',
+    data: [
+      { time: '2020-01-01', value: 25 },
+      { time: '2020-01-02', value: 26 },
+      { time: '2020-01-03', value: 24 },
+      { time: '2020-01-04', value: 28 },
+      { time: '2020-01-05', value: 27 },
+      { time: '2020-01-06', value: 30 },
+      { time: '2020-01-07', value: 32 },
+      { time: '2020-01-08', value: 29 },
+      { time: '2020-01-09', value: 35 },
+      { time: '2020-01-10', value: 33 },
+      { time: '2020-01-11', value: 20 },
+      { time: '2020-01-12', value: 22 },
     ],
   },
   {
     index: 2,
-    name: 'Botão 3',
+    name: '2021',
     data: [
-      { time: '2019-01-01', value: 20 },
-      { time: '2019-01-02', value: 22 },
-      { time: '2019-01-03', value: 23 },
-      { time: '2019-01-04', value: 18 },
-      { time: '2019-01-05', value: 24 },
+      { time: '2021-01-01', value: 25 },
+      { time: '2021-01-02', value: 26 },
+      { time: '2021-01-03', value: 24 },
+      { time: '2021-01-04', value: 28 },
+      { time: '2021-01-05', value: 27 },
+      { time: '2021-01-06', value: 30 },
+      { time: '2021-01-07', value: 32 },
+      { time: '2021-01-08', value: 29 },
+      { time: '2021-01-09', value: 35 },
+      { time: '2021-01-10', value: 33 },
+      { time: '2021-01-11', value: 20 },
+      { time: '2021-01-12', value: 22 },
+    ],
+  },
+  {
+    index: 3,
+    name: '2023',
+    data: [
+      { time: '2023-11-22', value: 72.51 },
+      { time: '2023-11-23', value: 71.11 },
+      { time: '2023-11-24', value: 77.02 },
+      { time: '2023-11-25', value: 77.32 },
+      { time: '2023-11-26', value: 75.17 },
+      { time: '2023-11-27', value: 78.89 },
+      { time: '2023-11-28', value: 75.46 },
+      { time: '2023-11-29', value: 73.92 },
+      { time: '2023-11-30', value: 72.68 },
     ],
   },
 ];
@@ -86,13 +135,22 @@ export const ChartComponent = (props) => {
 
   const addNewData = () => {
     const newData = [
-      { time: '2019-01-01', value: 25 },
-      { time: '2019-01-02', value: 30 },
-      { time: '2019-01-03', value: 24 },
-      { time: '2019-01-04', value: 52 },
-      { time: '2019-01-05', value: 81 },
+      { time: '2023-11-22', value: 72.51 },
+      { time: '2023-11-23', value: 71.11 },
+      { time: '2023-11-24', value: 77.02 },
+      { time: '2023-11-25', value: 77.32 },
+      { time: '2023-11-26', value: 75.17 },
+      { time: '2023-11-27', value: 78.89 },
+      { time: '2023-11-28', value: 75.46 },
+      { time: '2023-11-29', value: 73.92 },
+      { time: '2023-11-30', value: 72.68 },
     ];
     setChartData([...chartData, ...newData]);
+  };
+
+  const addNewData01 = () => {
+    const dados01 = chartList.find((item) => item.name === 'Botão 1').data;
+    setChartData([...chartData, ...dados01]);
   };
 
   const addNewData02 = () => {
@@ -103,6 +161,16 @@ export const ChartComponent = (props) => {
   const handleButtonClick = (button) => {
     setActiveButton(button);
     addNewData02();
+  };
+
+  const addNewData03 = () => {
+    const dados03 = chartList.find((item) => item.name === 'Botão 3').data;
+    setChartData([...chartData, ...dados03]);
+  };
+
+  const addNewData04 = () => {
+    const dados04 = chartList.find((item) => item.name === 'Botão 4').data;
+    setChartData([...chartData, ...dados04]);
   };
 
   useEffect(() => {
@@ -135,11 +203,7 @@ export const ChartComponent = (props) => {
         labelBackgroundColor: 'pink',
       },
     });
-    chart.timeScale().fitContent({
-      borderColor: 'red',
-      barSpacing: 10000,
-      ticksVisible: false,
-    });
+    chart.timeScale().fitContent();
 
     const newSeries = chart.addAreaSeries({
       lineColor,
@@ -199,25 +263,31 @@ export const ChartComponent = (props) => {
           </button>
         ))} */}
         <button
-          disabled={activeButton === 'button1'}
-          onClick={() => handleButtonClick('button1')}
+          // disabled={activeButton === 'button1'}
+          onClick={addNewData01}
         >
-          Botão 1
+          {chartList[0].name}
         </button>
         <button
-          disabled={activeButton === 'button2'}
-          onClick={() => handleButtonClick('button2')}
+          // disabled={activeButton === 'button2'}
+          onClick={addNewData02}
         >
-          Botão 2
+          {chartList[1].name}
         </button>
         <button
-          disabled={activeButton === 'button3'}
-          onClick={() => handleButtonClick('button3')}
+          // disabled={activeButton === 'button3'}
+          onClick={addNewData03}
         >
-          Botão 3
+          {chartList[2].name}
+        </button>
+        <button
+          // disabled={activeButton === 'button4'}
+          onClick={addNewData04}
+        >
+          {chartList[3].name}
         </button>
       </div>
-      <button onClick={addNewData}>Adicionar nova série de dados</button>
+      {/* <button onClick={addNewData}>Adicionar nova série de dados</button> */}
 
       {stockExchange.map((item, id) => {
         let value = '';
@@ -242,19 +312,6 @@ export const ChartComponent = (props) => {
     </div>
   );
 };
-
-const initialData = [
-  { time: '2018-12-22', value: 32.51 },
-  { time: '2018-12-23', value: 31.11 },
-  { time: '2018-12-24', value: 27.02 },
-  { time: '2018-12-25', value: 27.32 },
-  { time: '2018-12-26', value: 25.17 },
-  { time: '2018-12-27', value: 28.89 },
-  { time: '2018-12-28', value: 25.46 },
-  { time: '2018-12-29', value: 23.92 },
-  { time: '2018-12-30', value: 22.68 },
-  { time: '2018-12-31', value: 22.67 },
-];
 
 export default function App(props) {
   return (
