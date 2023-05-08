@@ -17,20 +17,26 @@ export const ChartComponent = ({ data, colors = {} }) => {
           color: '#ffffff',
         },
         textColor: '#333',
+        lastValueVisible: false,
       },
-
       width: chartContainerRef.current.clientWidth,
       height: 300,
       crosshair: {
+        mode: 1,
         vertLine: {
+          labelVisible: false, //etiqueta exibida ao mover o cursor
           color: '#333',
           width: 1,
           style: 0,
         },
         horzLine: {
+          // labelVisible: false, //etiqueta exibida ao mover o cursor
           color: '#333',
           width: 1,
           style: 0,
+          labelVisible: false,
+          labelBackgroundColor: 'rgba(29, 52, 34, 0.9)',
+          labelFontSize: 12,
         },
       },
     });
@@ -42,8 +48,39 @@ export const ChartComponent = ({ data, colors = {} }) => {
       bottomColor: '#ffffff',
       crosshairMarkerBackgroundColor: '#348344',
       crosshairMarkerBorderWidth: 0,
+      lastValueVisible: false, //etiqueta fixa do último valor
     });
     newSeries.setData(data);
+
+    //inserindo uma legenda...
+    const container = document.getElementById('container');
+
+    const legend = document.createElement('div');
+    legend.className = 'legenda';
+    // legend.style.color = `white`;
+    container.appendChild(legend);
+
+    const firstRow = document.createElement('div');
+    firstRow.style.color = '';
+    legend.appendChild(firstRow);
+
+    chart.subscribeCrosshairMove((param) => {
+      let priceFormatted = '';
+      if (param.time) {
+        const data = param.seriesData.get(newSeries);
+        const price = data.value !== undefined ? data.value : data.close;
+        priceFormatted = price.toFixed(2);
+      }
+
+      const x = param.point && param.point.x;
+      const y = param.point && param.point.y;
+      const symbolName = x && y ?'Default':``;
+
+      legend.style.left = `${x + 12}px`; // Adicione um valor de deslocamento horizontal
+      legend.style.top = `${y + 12}px`; // Adicione um valor de deslocamento vertical
+
+      firstRow.innerHTML = `${priceFormatted} ${symbolName}`;
+    });
 
     window.addEventListener('resize', handleResize);
 
@@ -54,7 +91,12 @@ export const ChartComponent = ({ data, colors = {} }) => {
     };
   }, [data, colors]);
 
-  return <div ref={chartContainerRef} />;
+  return (
+    <div>
+      <div id="container" />
+      <div ref={chartContainerRef}></div>
+    </div>
+  );
 };
 
 const chartList = [
@@ -132,33 +174,29 @@ export default function Component(props) {
   return (
     <div className="grafico-cotacoes-container">
       <div className="commodities">
-        <button
-          disabled={activeButton === `button1` || !disable}
-          onClick={() => {
-            changeSelectedChart(0);
-            handleButtonClick(`button1`);
-          }}
-        >
-          {chartList[0].name}
-        </button>
-        <button
-          disabled={activeButton === `button2`}
-          onClick={() => {
-            changeSelectedChart(1);
-            handleButtonClick(`button2`);
-          }}
-        >
-          {chartList[1].name}
-        </button>
-        <button
-          disabled={activeButton === `button3`}
-          onClick={() => {
-            changeSelectedChart(2);
-            handleButtonClick(`button3`);
-          }}
-        >
-          {chartList[2].name}
-        </button>
+        {chartList.map((commodity, index) =>
+          index == 0 ? (
+            <button
+              disabled={activeButton === `button${index + 1}` || !disable}
+              onClick={() => {
+                changeSelectedChart(index);
+                handleButtonClick(`button${index + 1}`);
+              }}
+            >
+              {commodity.name}
+            </button>
+          ) : (
+            <button
+              disabled={activeButton === `button${index + 1}`}
+              onClick={() => {
+                changeSelectedChart(index);
+                handleButtonClick(`button${index + 1}`);
+              }}
+            >
+              {commodity.name}
+            </button>
+          )
+        )}
       </div>
       {stockExchange.map((item, id) => {
         let value = '';
