@@ -56,28 +56,35 @@ export const ChartComponent = ({ data, colors = {} }) => {
     const container = document.getElementById('container');
 
     const legend = document.createElement('div');
-    legend.className = 'legenda';
-    // legend.style.color = `white`;
     container.appendChild(legend);
 
     const firstRow = document.createElement('div');
-    firstRow.style.color = '';
+    firstRow.className = 'firstRow';
     legend.appendChild(firstRow);
 
     chart.subscribeCrosshairMove((param) => {
       let priceFormatted = '';
+      let symbolName = '';
+
       if (param.time) {
         const data = param.seriesData.get(newSeries);
         const price = data.value !== undefined ? data.value : data.close;
-        priceFormatted = price.toFixed(2);
+        priceFormatted = price;
+        symbolName = `Default`;
       }
 
       const x = param.point && param.point.x;
       const y = param.point && param.point.y;
-      const symbolName = x && y ?'Default':``;
 
-      legend.style.left = `${x + 12}px`; // Adicione um valor de deslocamento horizontal
-      legend.style.top = `${y + 12}px`; // Adicione um valor de deslocamento vertical
+      if (param.point && param.point.x && param.point && param.point.y) {
+        firstRow.style.left = `${x - 90}px`; // Adicione um valor de deslocamento horizontal
+        firstRow.style.top = `${y + 90}px`; // Adicione um valor de deslocamento vertical
+        firstRow.style.padding = `4px 10px`;
+      } else {
+        firstRow.style.left = `0px`; // Adicione um valor de deslocamento horizontal
+        firstRow.style.top = `0px`; // Adicione um valor de deslocamento vertical
+        firstRow.style.padding = `0px`;
+      }
 
       firstRow.innerHTML = `${priceFormatted} ${symbolName}`;
     });
