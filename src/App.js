@@ -21,6 +21,16 @@ export const ChartComponent = ({ data, colors = {} }) => {
       },
       width: chartContainerRef.current.clientWidth,
       height: 300,
+      rightOffset: 0,
+      timeScale: {
+        tickMarkFormatter: (time) => {
+          const date = new Date(time);
+          const day = date.getDate();
+          const dayF = day.length == 1 ? '0' + day : day;
+          const month = date.getMonth() + 1;
+          return `${day}/ ${month}`;
+        },
+      },
       crosshair: {
         mode: 1,
         vertLine: {
@@ -40,7 +50,22 @@ export const ChartComponent = ({ data, colors = {} }) => {
         },
       },
     });
+
+    chart.timeScale().applyOptions({
+      rightOffset: -1,
+      // tickMarkFormatter
+    });
+
+    chart.timeScale().time;
+
     chart.timeScale().fitContent();
+
+    const dateFormatter = (timestamp) => {
+      const date = new Date(timestamp * 1000);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      return `${day}/${month}`;
+    };
 
     const newSeries = chart.addAreaSeries({
       lineColor: '#2b4d32',
@@ -49,18 +74,28 @@ export const ChartComponent = ({ data, colors = {} }) => {
       crosshairMarkerBackgroundColor: '#348344',
       crosshairMarkerBorderWidth: 0,
       lastValueVisible: false, //etiqueta fixa do último valor
+      priceLineVisible: false, //linha pontilhada do último valor
     });
     newSeries.setData(data);
+
+    newSeries.priceScale().applyOptions({
+      autoScale: false, // disables auto scaling based on visible content
+      scaleMargins: {
+        top: 0,
+        bottom: 0,
+      },
+    });
 
     //inserindo uma legenda...
     const container = document.getElementById('container');
 
     const legend = document.createElement('div');
+    legend.className = 'legend';
     container.appendChild(legend);
 
-    const firstRow = document.createElement('div');
-    firstRow.className = 'firstRow';
-    legend.appendChild(firstRow);
+    const symbolValue = document.createElement('span');
+    symbolValue.className = 'symbolValue';
+    legend.appendChild(symbolValue);
 
     chart.subscribeCrosshairMove((param) => {
       let priceFormatted = '';
@@ -77,16 +112,16 @@ export const ChartComponent = ({ data, colors = {} }) => {
       const y = param.point && param.point.y;
 
       if (param.point && param.point.x && param.point && param.point.y) {
-        firstRow.style.left = `${x - 90}px`; // Adicione um valor de deslocamento horizontal
-        firstRow.style.top = `${y + 90}px`; // Adicione um valor de deslocamento vertical
-        firstRow.style.padding = `4px 10px`;
+        legend.style.left = `${x - 100}px`; // Adicione um valor de deslocamento horizontal
+        legend.style.top = `${y + 80}px`; // Adicione um valor de deslocamento vertical
+        legend.style.padding = `4px 10px`;
       } else {
-        firstRow.style.left = `0px`; // Adicione um valor de deslocamento horizontal
-        firstRow.style.top = `0px`; // Adicione um valor de deslocamento vertical
-        firstRow.style.padding = `0px`;
+        legend.style.left = `0px`; // Adicione um valor de deslocamento horizontal
+        legend.style.top = `0px`; // Adicione um valor de deslocamento vertical
+        legend.style.padding = `0px`;
       }
 
-      firstRow.innerHTML = `${priceFormatted} ${symbolName}`;
+      legend.innerHTML = `${priceFormatted} ${symbolName}`;
     });
 
     window.addEventListener('resize', handleResize);
