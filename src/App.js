@@ -22,13 +22,24 @@ export const ChartComponent = ({ data, colors = {} }) => {
       width: chartContainerRef.current.clientWidth,
       height: 300,
       rightOffset: 0,
+
       timeScale: {
+        borderVisible: true,
         tickMarkFormatter: (time) => {
           const date = new Date(time);
-          const day = date.getDate();
-          const dayF = day.length == 1 ? '0' + day : day;
-          const month = date.getMonth() + 1;
+          const day = date.getDate().toString().padStart(2, '0');
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
           return `${day}/ ${month}`;
+        },
+      },
+      grid: {
+        vertLines: {
+          color: '#e1e1e1',
+          style: 2,
+        },
+        horzLines: {
+          color: '#e1e1e1',
+          style: 2,
         },
       },
       crosshair: {
@@ -53,7 +64,6 @@ export const ChartComponent = ({ data, colors = {} }) => {
 
     chart.timeScale().applyOptions({
       rightOffset: -1,
-      // tickMarkFormatter
     });
 
     chart.timeScale().time;
@@ -81,7 +91,7 @@ export const ChartComponent = ({ data, colors = {} }) => {
     newSeries.priceScale().applyOptions({
       autoScale: false, // disables auto scaling based on visible content
       scaleMargins: {
-        top: 0,
+        top: 0.1,
         bottom: 0,
       },
     });
@@ -145,16 +155,16 @@ const chartList = [
   {
     name: 'Açúcar',
     data: [
-      { time: '2018-12-22', value: 32.51 },
-      { time: '2018-12-23', value: 31.11 },
-      { time: '2018-12-24', value: 27.02 },
-      { time: '2018-12-25', value: 27.32 },
-      { time: '2018-12-26', value: 25.17 },
-      { time: '2018-12-27', value: 28.89 },
-      { time: '2018-12-28', value: 25.46 },
-      { time: '2018-12-29', value: 23.92 },
-      { time: '2018-12-30', value: 22.68 },
-      { time: '2018-12-31', value: 22.67 },
+      { time: '2018-12-02', value: 32.51 },
+      { time: '2018-12-03', value: 31.11 },
+      { time: '2018-12-04', value: 27.02 },
+      { time: '2018-12-05', value: 27.32 },
+      { time: '2018-12-06', value: 25.17 },
+      { time: '2018-12-07', value: 28.89 },
+      { time: '2018-12-08', value: 25.46 },
+      { time: '2018-12-09', value: 23.92 },
+      { time: '2018-12-10', value: 22.68 },
+      { time: '2018-12-11', value: 22.67 },
     ],
   },
   {
