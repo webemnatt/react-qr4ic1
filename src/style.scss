@@ -22,11 +22,14 @@ $stable: #707070;
   font-weight: 600;
   border: 40px 10px;
   border-radius: 5px;
+}
 
-  &__value {
-    background-color: pink;
-    padding: 50px;
-  }
+.symbol_value{
+  font-size: 14px;
+}
+
+.symbol_name{
+  font-size: 12px;
 }
 
 .grafico-cotacoes-container {
@@ -65,7 +68,7 @@ button {
 .quotation {
   display: flex;
   overflow: hidden;
-  gap: 200px;
+  gap: calc(05% - 0px);
   margin-bottom: 10px;
 
   &__name {
@@ -112,4 +115,18 @@ button {
       }
     }
   }
+}
+
+.update {
+  width: 186px;
+  // font-family: SourceSansPro;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: right;
+  color: #333;
+  padding-top: 8px;
 }

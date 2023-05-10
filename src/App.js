@@ -19,13 +19,18 @@ export const ChartComponent = ({ data, colors = {} }) => {
         textColor: '#333',
         lastValueVisible: false,
       },
-      width: chartContainerRef.current.clientWidth,
-      height: 300,
-      rightOffset: 0,
-
+      width: chartContainerRef.current.clientWidth, //largura conforme o tamanho da janela do usuário
+      height: 300, // altura fixa
+      rightPriceScale: {
+        // para remover a linha horizontal dos preços
+        borderColor: 'transparent', // Define a cor da linha como transparente
+        lineWidth: 0, // Define a largura da linha como 0
+      },
       timeScale: {
-        borderVisible: true,
+        rightOffset: -0.5, //distância do gráfico em relação ao eixo y
+        borderVisible: false, // remove a linha do eixo x
         tickMarkFormatter: (time) => {
+          // formata a data
           const date = new Date(time);
           const day = date.getDate().toString().padStart(2, '0');
           const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -33,17 +38,19 @@ export const ChartComponent = ({ data, colors = {} }) => {
         },
       },
       grid: {
+        // linhas-grades do gráfico
         vertLines: {
           color: '#e1e1e1',
-          style: 2,
+          style: 3,
         },
         horzLines: {
           color: '#e1e1e1',
-          style: 2,
+          style: 3,
         },
       },
       crosshair: {
-        mode: 1,
+        // linha-guia que acompanha o movimento do mouse
+        mode: 1, // comportamento: 0: normal, 1: magnético
         vertLine: {
           labelVisible: false, //etiqueta exibida ao mover o cursor
           color: '#333',
@@ -61,28 +68,18 @@ export const ChartComponent = ({ data, colors = {} }) => {
         },
       },
     });
-
-    chart.timeScale().applyOptions({
-      rightOffset: -1,
-    });
-
-    chart.timeScale().time;
-
     chart.timeScale().fitContent();
 
-    const dateFormatter = (timestamp) => {
-      const date = new Date(timestamp * 1000);
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      return `${day}/${month}`;
-    };
-
     const newSeries = chart.addAreaSeries({
-      lineColor: '#2b4d32',
-      topColor: '#2b4d32',
-      bottomColor: '#ffffff',
-      crosshairMarkerBackgroundColor: '#348344',
-      crosshairMarkerBorderWidth: 0,
+      lineColor: '#2b4d32', // cor da linha do gráfico
+      // lineStyle: 0, // 0: sólida; 1, pontilhado; 3, pontilhado maior; 4, mais espaçado
+      // lineWidth: 3, // largura da linha do gráfico
+      topColor: 'rgba(47, 120, 62, 0.46)', // cor do topo da área do gráfico abaixo da linha
+      bottomColor: 'rgba(0, 0, 0, 0)', // cor da parte de baixo da área do gráfico depois da linha
+      invertFilledArea: false,
+      crosshairMarkerRadius: 6, // tamanho da bolinha
+      crosshairMarkerBackgroundColor: '#348344', // cor da bolinha
+      crosshairMarkerBorderWidth: 0, // cor da borda da bolinha
       lastValueVisible: false, //etiqueta fixa do último valor
       priceLineVisible: false, //linha pontilhada do último valor
     });
@@ -100,22 +97,26 @@ export const ChartComponent = ({ data, colors = {} }) => {
     const container = document.getElementById('container');
 
     const legend = document.createElement('div');
+    // legend.innerHTML="legend: "; // único necessário para exibir a legenda móvel
     legend.className = 'legend';
     container.appendChild(legend);
 
     const symbolValue = document.createElement('span');
-    symbolValue.className = 'symbolValue';
+    symbolValue.className = 'symbol_value';
     legend.appendChild(symbolValue);
+
+    const symbolName = document.createElement('span');
+    symbolName.className = 'symbol_name';
+    legend.appendChild(symbolName);
 
     chart.subscribeCrosshairMove((param) => {
       let priceFormatted = '';
-      let symbolName = '';
+      let symbolFormatted = `Default`;
 
       if (param.time) {
         const data = param.seriesData.get(newSeries);
         const price = data.value !== undefined ? data.value : data.close;
         priceFormatted = price;
-        symbolName = `Default`;
       }
 
       const x = param.point && param.point.x;
@@ -125,13 +126,17 @@ export const ChartComponent = ({ data, colors = {} }) => {
         legend.style.left = `${x - 100}px`; // Adicione um valor de deslocamento horizontal
         legend.style.top = `${y + 80}px`; // Adicione um valor de deslocamento vertical
         legend.style.padding = `4px 10px`;
+        symbolValue.style.paddingRight = `5px`;
       } else {
+        symbolValue.style.paddingRight = `0px`;
         legend.style.left = `0px`; // Adicione um valor de deslocamento horizontal
         legend.style.top = `0px`; // Adicione um valor de deslocamento vertical
         legend.style.padding = `0px`;
       }
 
-      legend.innerHTML = `${priceFormatted} ${symbolName}`;
+      // legend.innerHTML = `${priceFormatted} ${symbolName}`;
+      symbolValue.innerHTML = `${priceFormatted}`;
+      symbolName.innerHTML = `${symbolFormatted}`;
     });
 
     window.addEventListener('resize', handleResize);
@@ -270,9 +275,9 @@ export default function Component(props) {
         );
       })}
 
-      <div>
-        <ChartComponent {...props} data={selectedChartData} />
-      </div>
+      <ChartComponent {...props} data={selectedChartData} />
+
+      <span className="update">Atualizado em: 28/01/2021 - 17h27</span>
     </div>
   );
 }
