@@ -1,5 +1,6 @@
 import { createChart, ColorType } from 'lightweight-charts';
 import React, { useEffect, useRef, useState } from 'react';
+
 import './style.scss';
 
 export const ChartComponent = ({ data, colors = {} }) => {
@@ -102,21 +103,22 @@ export const ChartComponent = ({ data, colors = {} }) => {
     container.appendChild(legend);
 
     const symbolValue = document.createElement('span');
-    symbolValue.className = 'symbol_value';
+    symbolValue.className = 'legend__symbol_value';
     legend.appendChild(symbolValue);
 
     const symbolName = document.createElement('span');
-    symbolName.className = 'symbol_name';
+    symbolName.className = 'legend__symbol_name';
     legend.appendChild(symbolName);
 
     chart.subscribeCrosshairMove((param) => {
-      let priceFormatted = '';
-      let symbolFormatted = `Default`;
+      let priceFormatted = ``;
+      let symbolFormatted = ``;
 
       if (param.time) {
         const data = param.seriesData.get(newSeries);
         const price = data.value !== undefined ? data.value : data.close;
         priceFormatted = price;
+        symbolFormatted = `Default`;
       }
 
       const x = param.point && param.point.x;
@@ -127,8 +129,10 @@ export const ChartComponent = ({ data, colors = {} }) => {
         legend.style.top = `${y + 80}px`; // Adicione um valor de deslocamento vertical
         legend.style.padding = `4px 10px`;
         symbolValue.style.paddingRight = `5px`;
+        symbolName.style.paddingRight = `0px`;
       } else {
         symbolValue.style.paddingRight = `0px`;
+        symbolName.style.paddingRight = `0px`;
         legend.style.left = `0px`; // Adicione um valor de deslocamento horizontal
         legend.style.top = `0px`; // Adicione um valor de deslocamento vertical
         legend.style.padding = `0px`;
@@ -138,6 +142,8 @@ export const ChartComponent = ({ data, colors = {} }) => {
       symbolValue.innerHTML = `${priceFormatted}`;
       symbolName.innerHTML = `${symbolFormatted}`;
     });
+
+    window.addEventListener('resize', handleResize);
 
     window.addEventListener('resize', handleResize);
 

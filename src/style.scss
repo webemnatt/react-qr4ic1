@@ -5,11 +5,31 @@ $negative: #d14e4e;
 $positive: #162fb9;
 $stable: #707070;
 
+$breakpoints: (
+  'xs': 0,
+  'sm': 480px,
+  'md': 580px,
+  'lg': 900px,
+);
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
+@mixin media-breakpoint($breakpoint) {
+  $breakpoint-px: map-get($breakpoints, $breakpoint);
+
+  @if $breakpoint-px == 0 {
+    @content;
+  } @else {
+    @media (max-width: $breakpoint-px) {
+      @content;
+    }
+  }
+}
+// https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action sobre editar posição no mobile
 
 .legend {
   background-color: rgba(29, 52, 34, 0.9);
@@ -22,14 +42,12 @@ $stable: #707070;
   font-weight: 600;
   border: 40px 10px;
   border-radius: 5px;
-}
-
-.symbol_value{
-  font-size: 14px;
-}
-
-.symbol_name{
-  font-size: 12px;
+  &__symbol_value {
+    font-size: 14px;
+  }
+  &__symbol_name {
+    font-size: 12px;
+  }
 }
 
 .grafico-cotacoes-container {
