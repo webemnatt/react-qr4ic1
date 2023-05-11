@@ -126,8 +126,8 @@ export const ChartComponent = ({ data, colors = {} }) => {
 
       if (param.point && param.point.x && param.point && param.point.y) {
         const legendWidth = 80;
-        const legendHeight = -10;
-        const legendMargin = 15;
+        const legendHeight = 80;
+        const legendMargin = 20;
 
         let left = cursorPositionX + legendMargin;
         if (left > container.clientWidth - legendWidth) {
@@ -136,18 +136,21 @@ export const ChartComponent = ({ data, colors = {} }) => {
 
         let top = cursorPositionY + legendMargin;
         if (top > container.clientHeight - legendHeight) {
-          top = cursorPositionY - legendHeight - legendMargin;
+          top = param.point.y + legendHeight + legendMargin;
         }
         legend.style.left = left + 'px'; // Adicione um valor de deslocamento horizontal
         legend.style.top = top + 'px'; // Adicione um valor de deslocamento vertical
 
         legend.style.padding = `4px 10px`;
         symbolValue.style.paddingRight = `5px`;
+
+        console.log('if ', param.point.y);
       } else {
         legend.style.left = `0px`;
         legend.style.top = `0px`;
         legend.style.padding = `0px`;
         symbolValue.style.paddingRight = `0px`;
+        console.log('else', param.point && param.point.y);
       }
       symbolValue.innerHTML = `${priceFormatted}`;
       symbolName.innerHTML = `${symbolFormatted}`;
