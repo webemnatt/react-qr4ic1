@@ -121,24 +121,34 @@ export const ChartComponent = ({ data, colors = {} }) => {
         symbolFormatted = `Default`;
       }
 
-      const x = param.point && param.point.x;
-      const y = param.point && param.point.y;
+      const cursorPositionX = param.point && param.point.x;
+      const cursorPositionY = param.point && param.point.y;
 
       if (param.point && param.point.x && param.point && param.point.y) {
-        legend.style.left = `${x - 100}px`; // Adicione um valor de deslocamento horizontal
-        legend.style.top = `${y + 80}px`; // Adicione um valor de deslocamento vertical
+        const legendWidth = 80;
+        const legendHeight = -10;
+        const legendMargin = 15;
+
+        let left = cursorPositionX + legendMargin;
+        if (left > container.clientWidth - legendWidth) {
+          left = cursorPositionX - legendMargin - legendWidth;
+        }
+
+        let top = cursorPositionY + legendMargin;
+        if (top > container.clientHeight - legendHeight) {
+          top = cursorPositionY - legendHeight - legendMargin;
+        }
+        legend.style.left = left + 'px'; // Adicione um valor de deslocamento horizontal
+        legend.style.top = top + 'px'; // Adicione um valor de deslocamento vertical
+
         legend.style.padding = `4px 10px`;
         symbolValue.style.paddingRight = `5px`;
-        symbolName.style.paddingRight = `0px`;
       } else {
-        symbolValue.style.paddingRight = `0px`;
-        symbolName.style.paddingRight = `0px`;
-        legend.style.left = `0px`; // Adicione um valor de deslocamento horizontal
-        legend.style.top = `0px`; // Adicione um valor de deslocamento vertical
+        legend.style.left = `0px`;
+        legend.style.top = `0px`;
         legend.style.padding = `0px`;
+        symbolValue.style.paddingRight = `0px`;
       }
-
-      // legend.innerHTML = `${priceFormatted} ${symbolName}`;
       symbolValue.innerHTML = `${priceFormatted}`;
       symbolName.innerHTML = `${symbolFormatted}`;
     });
@@ -176,6 +186,25 @@ const chartList = [
       { time: '2018-12-09', value: 23.92 },
       { time: '2018-12-10', value: 22.68 },
       { time: '2018-12-11', value: 22.67 },
+      { time: '2018-12-12', value: 52.51 },
+      { time: '2018-12-13', value: 51.11 },
+      { time: '2018-12-14', value: 57.02 },
+      { time: '2018-12-15', value: 57.32 },
+      { time: '2018-12-16', value: 55.17 },
+      { time: '2018-12-17', value: 58.89 },
+      { time: '2018-12-18', value: 55.46 },
+      { time: '2018-12-19', value: 53.92 },
+      { time: '2018-12-20', value: 52.68 },
+      { time: '2018-12-22', value: 32.51 },
+      { time: '2018-12-23', value: 31.11 },
+      { time: '2018-12-24', value: 27.02 },
+      { time: '2018-12-25', value: 27.32 },
+      { time: '2018-12-26', value: 25.17 },
+      { time: '2018-12-27', value: 28.89 },
+      { time: '2018-12-28', value: 25.46 },
+      { time: '2018-12-29', value: 23.92 },
+      { time: '2018-12-30', value: 22.68 },
+      { time: '2018-12-31', value: 52.67 },
     ],
   },
   {
