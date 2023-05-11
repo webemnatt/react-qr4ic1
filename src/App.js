@@ -89,8 +89,8 @@ export const ChartComponent = ({ data, colors = {} }) => {
     newSeries.priceScale().applyOptions({
       autoScale: false, // disables auto scaling based on visible content
       scaleMargins: {
-        top: 0.1,
-        bottom: 0,
+        top: 0.2,
+        bottom: 0.2,
       },
     });
 
@@ -144,13 +144,11 @@ export const ChartComponent = ({ data, colors = {} }) => {
         legend.style.padding = `4px 10px`;
         symbolValue.style.paddingRight = `5px`;
 
-        console.log('if ', param.point.y);
       } else {
         legend.style.left = `0px`;
         legend.style.top = `0px`;
         legend.style.padding = `0px`;
         symbolValue.style.paddingRight = `0px`;
-        console.log('else', param.point && param.point.y);
       }
       symbolValue.innerHTML = `${priceFormatted}`;
       symbolName.innerHTML = `${symbolFormatted}`;
