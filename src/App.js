@@ -6,6 +6,8 @@ import { StockExchange } from './StockExchange';
 
 import './style.scss';
 
+import { getPeriodLastThirtyDays } from './getPeriodLastThirtyDays';
+
 export default function Component(props) {
   const [selectedChartIndex, setSelectedChartIndex] = useState(0);
   const [activeButton, setActiveButton] = useState(null);

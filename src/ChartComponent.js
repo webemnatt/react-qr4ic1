@@ -1,7 +1,7 @@
 import { createChart, ColorType } from 'lightweight-charts';
 import React, { useEffect, useRef } from 'react';
 
-import { ChartLegend } from './ChartLegend';
+import { chartLegend } from './chartLegend';
 
 export const ChartComponent = ({ data, colors = {} }) => {
   const chartContainerRef = useRef();
@@ -94,7 +94,7 @@ export const ChartComponent = ({ data, colors = {} }) => {
       },
     });
 
-    <ChartLegend />;
+    chartLegend(chart,newSeries)
 
     window.addEventListener('resize', handleResize);
 

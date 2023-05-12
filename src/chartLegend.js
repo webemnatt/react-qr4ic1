@@ -1,4 +1,4 @@
-export const ChartLegend = () => {
+export function chartLegend(chart, newSeries) {
   //inserindo uma legenda...
   const container = document.getElementById('container');
 
@@ -57,4 +57,4 @@ export const ChartLegend = () => {
     symbolValue.innerHTML = `${priceFormatted}`;
     symbolName.innerHTML = `${symbolFormatted}`;
   });
-};
+}
