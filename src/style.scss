@@ -18,19 +18,6 @@ $breakpoints: (
   box-sizing: border-box;
 }
 
-@mixin media-breakpoint($breakpoint) {
-  $breakpoint-px: map-get($breakpoints, $breakpoint);
-
-  @if $breakpoint-px == 0 {
-    @content;
-  } @else {
-    @media (max-width: $breakpoint-px) {
-      @content;
-    }
-  }
-}
-// https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action sobre editar posição no mobile
-
 .legend {
   background-color: rgba(29, 52, 34, 0.9);
   color: white;
@@ -42,7 +29,8 @@ $breakpoints: (
   font-weight: 600;
   border: 40px 10px;
   border-radius: 5px;
-    &__symbol_value {
+  touch-action: auto;
+  &__symbol_value {
     font-size: 14px;
   }
   &__symbol_name {
@@ -86,7 +74,7 @@ button {
 .quotation {
   display: flex;
   overflow: hidden;
-  gap: calc(05% - 0px);
+  justify-content: space-between;
   margin-bottom: 10px;
 
   &__name {
@@ -98,6 +86,7 @@ button {
 .quotation__value {
   font-weight: bold;
   position: relative;
+  padding-right: 10px;
 
   &-positive {
     color: $positive;
