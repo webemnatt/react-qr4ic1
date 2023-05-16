@@ -53,7 +53,9 @@ export default function Component(props) {
       </div>
       <StockExchange />
 
-      <ChartComponent {...props} data={selectedChartData} />
+      <div id="chart-area-container">
+        <ChartComponent {...props} data={selectedChartData} />
+      </div>
 
       <span className="update">Atualizado em: 28/01/2021 - 17h27</span>
     </div>

@@ -1,60 +1,71 @@
-export function chartLegend(chart, newSeries) {
-  //inserindo uma legenda...
-  const container = document.getElementById('container');
+export function chartLegend(chart, series) {
+  const container = document.getElementById('chart-area-container');
 
+  // Create and style the legend html element
   const legend = document.createElement('div');
-  // legend.innerHTML="legend: "; // único necessário para exibir a legenda móvel
   legend.className = 'legend';
   container.appendChild(legend);
 
-  const symbolValue = document.createElement('span');
-  symbolValue.className = 'legend__symbol_value';
-  legend.appendChild(symbolValue);
-
-  const symbolName = document.createElement('span');
-  symbolName.className = 'legend__symbol_name';
-  legend.appendChild(symbolName);
-
+  // update legend
   chart.subscribeCrosshairMove((param) => {
-    let priceFormatted = ``;
-    let symbolFormatted = ``;
-
-    if (param.time) {
-      const data = param.seriesData.get(newSeries);
-      const price = data.value !== undefined ? data.value : data.close;
-      priceFormatted = price;
-      symbolFormatted = `Default`;
-    }
-
-    const cursorPositionX = param.point && param.point.x;
-    const cursorPositionY = param.point && param.point.y;
-
-    if (param.point && param.point.x && param.point && param.point.y) {
-      const legendWidth = 80;
-      const legendHeight = 80;
-      const legendMargin = 20;
-
-      let left = cursorPositionX + legendMargin;
-      if (left > container.clientWidth - legendWidth) {
-        left = cursorPositionX - legendMargin - legendWidth;
-      }
-
-      let top = cursorPositionY + legendMargin;
-      if (top > container.clientHeight - legendHeight) {
-        top = param.point.y + legendHeight + legendMargin;
-      }
-      legend.style.left = left + 'px'; // Adicione um valor de deslocamento horizontal
-      legend.style.top = top + 'px'; // Adicione um valor de deslocamento vertical
-
-      legend.style.padding = `4px 10px`;
-      symbolValue.style.paddingRight = `5px`;
+    if (
+      param.point === undefined ||
+      !param.time ||
+      param.point.x < 0 ||
+      param.point.x > container.clientWidth ||
+      param.point.y < 0 ||
+      param.point.y > container.clientHeight
+    ) {
+      legend.style.display = 'none';
     } else {
-      legend.style.left = `0px`;
-      legend.style.top = `0px`;
-      legend.style.padding = `0px`;
-      symbolValue.style.paddingRight = `0px`;
+      legend.style.display = 'block';
+      const data = param.seriesData.get(series);
+      const price = data.value !== undefined ? data.value : data.close;
+      legend.innerHTML = `<span style="font-size: 14px;"
+      >
+    ${Math.round(100 * price) / 100}</span>
+    <span style="font-size: 12px">Default</span>`;
+
+      const legendWidth = 98;
+      const legendHeight = -40;
+      const legendMargin = 12;
+
+      const coordinate = series.priceToCoordinate(price);
+      let shiftedCoordinate = param.point.x - 50;
+      if (coordinate === null) {
+        return;
+      }
+      shiftedCoordinate = Math.max(
+        0,
+        Math.min(container.clientWidth - legendWidth, shiftedCoordinate)
+      );
+      const coordinateY =
+        coordinate - legendHeight - legendMargin > 0
+          ? coordinate - legendHeight - legendMargin
+          : Math.max(
+              0,
+              Math.min(
+                container.clientHeight - legendHeight - legendMargin,
+                coordinate + legendMargin
+              )
+            );
+      legend.style.left = shiftedCoordinate + 'px';
+      legend.style.top = coordinateY + 'px';
+
+      /*
+      const y = param.point.y;
+		let left = param.point.x + legendMargin;
+		if (left > container.clientWidth - legendWidth) {
+			left = param.point.x - legendMargin - legendWidth;
+		}
+
+		let top = y + legendMargin;
+		if (top > container.clientHeight - legendHeight) {
+			top = y - legendHeight - legendMargin;
+		}
+		legend.style.left = left + 'px';
+		legend.style.top = top + 'px';
+      */
     }
-    symbolValue.innerHTML = `${priceFormatted}`;
-    symbolName.innerHTML = `${symbolFormatted}`;
   });
 }

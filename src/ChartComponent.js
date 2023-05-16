@@ -31,10 +31,7 @@ export const ChartComponent = ({ data, colors = {} }) => {
         rightOffset: 0.2, //distância do gráfico em relação ao eixo y
         borderVisible: false, // remove a linha do eixo x
         tickMarkFormatter: (time) => {
-          // formata a data
-          const date = new Date(time);
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
+          let [year, month, day] = time.split('-');
           return `${day}/ ${month}`;
         },
       },
@@ -68,6 +65,17 @@ export const ChartComponent = ({ data, colors = {} }) => {
           labelFontSize: 12,
         },
       },
+      handleScroll: {
+        mouseWheel: false,
+        pressedMouseMove: false,
+        horzTouchDrag: false,
+        vertTouchDrag: false,
+      },
+      handleScale: {
+        axisPressedMouseMove: false,
+        mouseWheel: false,
+        pinch: false,
+      },
     });
     chart.timeScale().fitContent();
 
@@ -94,7 +102,7 @@ export const ChartComponent = ({ data, colors = {} }) => {
       },
     });
 
-    chartLegend(chart,newSeries)
+    chartLegend(chart, newSeries);
 
     window.addEventListener('resize', handleResize);
 
@@ -107,10 +115,5 @@ export const ChartComponent = ({ data, colors = {} }) => {
     };
   }, [data, colors]);
 
-  return (
-    <div>
-      <div id="container" />
-      <div ref={chartContainerRef}></div>
-    </div>
-  );
+  return <div ref={chartContainerRef}></div>;
 };
