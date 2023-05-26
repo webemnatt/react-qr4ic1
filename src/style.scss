@@ -66,6 +66,33 @@ button {
   }
 }
 
+.grafico-cotacoes-commodities {
+  &__input {
+    display: none;
+  }
+
+  &__button {
+    font-weight: bold;
+    align-items: flex-start;
+    padding: 5px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: none;
+    margin: 0px 6px 14px 0px;
+    background-color: $white;
+    color: $darkGreen;
+    border: solid 1px;
+  }
+
+  &__input:checked + &__button {
+    color: $white;
+    background-color: $darkGreen;
+    border-color: $darkGreen;
+  }
+}
+
 .quotation {
   display: flex;
   overflow: hidden;

@@ -24,7 +24,7 @@ export default function Component(props) {
 
   return (
     <div className="grafico-cotacoes-container">
-      <div className="commodities">
+      <div className="grafico-cotacoes-commodities">
         {chartList.map((commodity, index) =>
           index == 0 ? (
             <button
