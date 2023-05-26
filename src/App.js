@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { chartList } from './chartlist';
-import { ChartComponent } from './ChartComponent ';
+import { ChartComponent } from './components/ChartComponent ';
 import { StockExchange } from './StockExchange';
 
 import './style.scss';

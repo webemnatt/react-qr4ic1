@@ -2,7 +2,7 @@ import { createChart } from 'lightweight-charts';
 import React, { useEffect, useRef } from 'react';
 
 import { chartLegend } from './chartLegend';
-import { chartConfiguration } from './configurations/chartConfigurations';
+import { chartConfiguration } from '../configurations/chartConfigurations';
 
 export const ChartComponent = ({ data }) => {
   const { createChartOptions, areaSeriesOptions, priceScaleOptions } =
