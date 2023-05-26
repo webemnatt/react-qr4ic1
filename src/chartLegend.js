@@ -21,10 +21,11 @@ export function chartLegend(chart, series) {
       legend.style.display = 'block';
       const data = param.seriesData.get(series);
       const price = data.value !== undefined ? data.value : data.close;
-      legend.innerHTML = `<span style="font-size: 14px;"
+      const value = 'Default';
+      legend.innerHTML = `<span class='legend__price'
       >
     ${Math.round(100 * price) / 100}</span>
-    <span style="font-size: 12px">Default</span>`;
+    <span class='legend__value'>${value}</span>`;
 
       const legendWidth = 98;
       const legendHeight = -40;
