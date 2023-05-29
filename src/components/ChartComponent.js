@@ -2,6 +2,8 @@ import { createChart } from 'lightweight-charts';
 import React, { useEffect, useRef } from 'react';
 
 import { chartLegend } from './chartLegend';
+
+import { loading } from './loading';
 import { chartConfiguration } from '../configurations/chartConfigurations';
 
 export const ChartComponent = ({ data }) => {
@@ -18,6 +20,7 @@ export const ChartComponent = ({ data }) => {
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth, //largura conforme o tamanho da janela do usuário
       height: 291, // altura fixa
+
       ...createChartOptions,
     });
     chart.timeScale().fitContent();
@@ -25,9 +28,8 @@ export const ChartComponent = ({ data }) => {
     const newSeries = chart.addAreaSeries(areaSeriesOptions);
     newSeries.setData(data);
 
-    newSeries.priceScale().applyOptions(priceScaleOptions);
-
-    chartLegend(chart, newSeries);
+    // chartLegend(chart, newSeries);
+    loading();
 
     window.addEventListener('resize', handleResize);
 

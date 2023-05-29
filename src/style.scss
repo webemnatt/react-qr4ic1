@@ -4,11 +4,50 @@ $darkGreen: #2b4d32;
 $negative: #d14e4e;
 $positive: #162fb9;
 $stable: #707070;
+$gradient: linear-gradient(
+  to bottom,
+  #2b4d32,
+  rgba(52, 131, 68, 0.5) 59%,
+  rgba(47, 120, 62, 0.46) 62%,
+  rgba(0, 0, 0, 0)
+);
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+.loading {
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  &::before {
+    content: 'Carregando os dados...';
+    color: $white;
+    text-align: center;
+    height: 291px;
+    width: auto;
+    position: absolute;
+    font-size: 28px;
+    margin: -280px 0px 0px 0px;
+    z-index: 1;
+    // animation: pulse 1s infinite;
+    padding: 100px 0;
+    align-items: center;
+    opacity: 0.43;
+    background-image: $gradient;
+    justify-content: space-between;
+  }
 }
 
 .legend {

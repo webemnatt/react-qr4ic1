@@ -24,8 +24,15 @@ export const chartConfiguration = {
       // para remover a linha horizontal dos preços
       borderColor: 'transparent', // Define a cor da linha como transparente
       lineWidth: 0, // Define a largura da linha como 0
+      //priceScaleOptions: {},
+      autoScale: false,
+      scaleMargins: {
+        top: 0.1,
+        bottom: 0.2,
+      },
     },
     timeScale: {
+      minBarSpacing: 0.1,
       rightBarStaysOnScroll: false,
       fixLeftEdge: true, //se true, impede do gráfico ser achatado para esquerda, permitindo apenas expandir
       fixRightEdge: true, //se true, impede do gráfico ser achatado para direita, permitindo apenas expandir
@@ -66,24 +73,17 @@ export const chartConfiguration = {
         labelFontSize: 12,
       },
     },
-    // handleScroll: {
-    //   // desabilita scroll do gráfico
-    //   mouseWheel: false,
-    //   pressedMouseMove: false,
-    //   horzTouchDrag: false,
-    //   vertTouchDrag: false,
-    // },
-    // handleScale: {
-    //   axisPressedMouseMove: false,
-    //   mouseWheel: false, //se true, espreme ou achata o gráfico
-    //   pinch: false,
-    // },
-  },
-  priceScaleOptions: {
-    autoScale: false,
-    scaleMargins: {
-      top: 0.2,
-      bottom: 0.2,
+    handleScroll: {
+      // desabilita scroll do gráfico
+      mouseWheel: false,
+      pressedMouseMove: false,
+      horzTouchDrag: false,
+      vertTouchDrag: false,
+    },
+    handleScale: {
+      axisPressedMouseMove: false,
+      mouseWheel: false, //se true, espreme ou achata o gráfico
+      pinch: false,
     },
   },
 };
