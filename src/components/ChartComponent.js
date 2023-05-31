@@ -6,7 +6,7 @@ import { chartLegend } from './chartLegend';
 import { loading } from './loading';
 import { chartConfiguration } from '../configurations/chartConfigurations';
 
-export const ChartComponent = ({ data, isLoading = false }) => {
+export const ChartComponent = ({ data, isLoading = true }) => {
   const { createChartOptions, areaSeriesOptions } = chartConfiguration;
 
   const chartContainerRef = useRef();
@@ -30,11 +30,10 @@ export const ChartComponent = ({ data, isLoading = false }) => {
     if (!isLoading) {
       chartLegend(chart, newSeries);
     } else {
-      /*
-      const legends = document.querySelectorAll('.chart-area-container');
-      legends.forEach((item) => item.remove());
-      */
       loading();
+
+      const legends = document.querySelectorAll('.legend');
+      legends.forEach((item) => item.remove());
     }
 
     window.addEventListener('resize', handleResize);
