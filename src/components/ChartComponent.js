@@ -20,7 +20,7 @@ export const ChartComponent = ({ data }) => {
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth, //largura conforme o tamanho da janela do usuário
       height: 291, // altura fixa
-
+      //demais opções
       ...createChartOptions,
     });
     chart.timeScale().fitContent();
