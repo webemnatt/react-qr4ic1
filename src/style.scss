@@ -21,8 +21,8 @@ $gradient: linear-gradient(
 #chart-area-container {
   position: relative;
 }
-
-.chart-area-container {
+/*
+.chart-area-container-loading {
   display: flex;
   height: 291px;
   background-image: $gradient;
@@ -48,10 +48,10 @@ $gradient: linear-gradient(
     content: 'Carregando os dados...';
     color: $white;
     font-size: 28px;
-    //animação só funciona se position:absolute
     animation: pulse 1s infinite;
   }
 }
+*/
 
 .isLoading {
   display: flex;
@@ -61,11 +61,23 @@ $gradient: linear-gradient(
   align-items: center;
   text-align: center;
   justify-content: center;
-
+  
   &__text{
-    // display: flex;
+    @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+    position:absolute;
     color: $white;
     font-size: 28px;
+    animation: pulse 1s infinite;
   }
  
 }

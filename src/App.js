@@ -51,7 +51,7 @@ export default function Component(props) {
       </div>
       <StockExchange />
 
-      <div id="chart-area-container">
+      <div id="chart-area-container" className="chart-area-container">
         <ChartComponent {...props} data={selectedChartData} />
       </div>
 

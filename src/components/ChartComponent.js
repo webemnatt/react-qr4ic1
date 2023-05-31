@@ -6,9 +6,8 @@ import { chartLegend } from './chartLegend';
 import { loading } from './loading';
 import { chartConfiguration } from '../configurations/chartConfigurations';
 
-export const ChartComponent = ({ data }) => {
-  const { createChartOptions, areaSeriesOptions, priceScaleOptions } =
-    chartConfiguration;
+export const ChartComponent = ({ data, isLoading = false }) => {
+  const { createChartOptions, areaSeriesOptions } = chartConfiguration;
 
   const chartContainerRef = useRef();
 
@@ -28,8 +27,15 @@ export const ChartComponent = ({ data }) => {
     const newSeries = chart.addAreaSeries(areaSeriesOptions);
     newSeries.setData(data);
 
-    // chartLegend(chart, newSeries);
-    loading();
+    if (!isLoading) {
+      chartLegend(chart, newSeries);
+    } else {
+      /*
+      const legends = document.querySelectorAll('.chart-area-container');
+      legends.forEach((item) => item.remove());
+      */
+      loading();
+    }
 
     window.addEventListener('resize', handleResize);
 
@@ -40,7 +46,7 @@ export const ChartComponent = ({ data }) => {
 
       chart.remove();
     };
-  }, [data]);
+  }, [data, isLoading]);
 
   return <div ref={chartContainerRef}></div>;
 };
